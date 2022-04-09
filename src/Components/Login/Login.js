@@ -1,6 +1,6 @@
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import React from 'react';
-import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import { useAuthState, useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import auth from '../../firebase.init';
 import useInput from '../../Hooks/useInput';
@@ -8,23 +8,22 @@ import useInput from '../../Hooks/useInput';
 const Login = () => {
     const { getEmail, getPassword, email, password } = useInput();
     const location = useLocation();
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const [user] = useAuthState(auth);
     const [
-        signInWithEmailAndPassword,
-        user,
-        loading,
-        error,
+        signInWithEmailAndPassword
     ] = useSignInWithEmailAndPassword(auth);
 
     //Redirect to the restricted page after login
-    // const from = location.state?.from?.pathname || "/";
+    const from = location.state?.from?.pathname || "/";
+    if (user) {
+        navigate(from, { replace: true });
+    }
+    // -------------->
     const handleFormSubmitLogin = event => {
         event.preventDefault();
         signInWithEmailAndPassword(email, password)
-        // auth.signin(() => { 
-        //     navigate(from, { replace: true });
-        //  })
-        
+
     }
     return (
         <div className='w-1/3 mx-auto mt-16 bg-white p-10 bg-opacity-10 bgc-blur bg-clip-padding rounded-lg'>
@@ -39,7 +38,7 @@ const Login = () => {
                     <label htmlFor="floating_password" className="absolute text-sm text-gray-100 dark:text-pink-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-pink-300 peer-focus:dark:text-white peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Password</label>
                 </div>
                 <div className="relative z-0 mb-6 w-full group">
-                   <p className='text-white'>Don't have an account? <span className='underline ml-5'><Link to="/register">Join Now</Link></span></p>
+                    <p className='text-white'>Don't have an account? <span className='underline ml-5'><Link to="/register">Join Now</Link></span></p>
                 </div>
                 <div className="text-center">
                     <button type="submit" className="text-white bg-[#F700CC] hover:bg-[#FF0087] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto md:w-full px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Log In</button>
