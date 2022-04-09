@@ -2,8 +2,8 @@ import React from 'react';
 
 const Register = () => {
     return (
-        <div className='w-1/3 mx-auto mt-24 bg-white p-10 bg-opacity-10 bgc-blur bg-clip-padding rounded-lg'>
-
+        <div className='w-1/3 mx-auto mt-16 bg-white p-10 bg-opacity-10 bgc-blur bg-clip-padding rounded-lg'>
+            <h1 className='text-white text-center font-semibold text-2xl mb-10'>Please Sing Up to continue...</h1>
             <form>
                 <div className="grid xl:grid-cols-2 xl:gap-6">
                     <div className="relative z-0 mb-6 w-full group">
