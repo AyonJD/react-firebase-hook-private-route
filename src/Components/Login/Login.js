@@ -1,13 +1,35 @@
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import auth from '../../firebase.init';
 import useInput from '../../Hooks/useInput';
 
 const Login = () => {
-    const {getEmail, getPassword} = useInput()
+    const { getEmail, getPassword, email, password } = useInput();
+    const location = useLocation();
+    const navigate = useNavigate()
+    const [
+        signInWithEmailAndPassword,
+        user,
+        loading,
+        error,
+    ] = useSignInWithEmailAndPassword(auth);
+
+    //Redirect to the restricted page after login
+    // const from = location.state?.from?.pathname || "/";
+    const handleFormSubmitLogin = event => {
+        event.preventDefault();
+        signInWithEmailAndPassword(email, password)
+        // auth.signin(() => { 
+        //     navigate(from, { replace: true });
+        //  })
+        
+    }
     return (
         <div className='w-1/3 mx-auto mt-16 bg-white p-10 bg-opacity-10 bgc-blur bg-clip-padding rounded-lg'>
             <h1 className='text-white text-center font-semibold text-2xl mb-10'>Please Log In to continue...</h1>
-            <form>
+            <form onSubmit={handleFormSubmitLogin}>
                 <div className="relative z-0 mb-6 w-full group">
                     <input onBlur={getEmail} type="email" name="floating_email" className="block py-2.5 px-0 w-full text-sm text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-pink-600 focus:outline-none focus:ring-0 focus:border-pink-500 peer" placeholder=" " required="" />
                     <label htmlFor="floating_email" className="absolute text-sm text-gray-100 dark:text-pink-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-pink-300 peer-focus:dark:text-white peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Email address</label>
