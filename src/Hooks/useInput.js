@@ -7,7 +7,6 @@ const useInput = () => {
 
     const getEmail = event => {
         setEmail(event.target.value);
-        console.log(event.target.value);
     }
     const getPassword = event => {
         setPassword(event.target.value)
@@ -15,7 +14,7 @@ const useInput = () => {
     const getConfirmPassword = event => {
         setConfirmPassword(event.target.value)
     }
-    return {email, password, confirmPassword, setEmail, setConfirmPassword, setPassword, getEmail, getPassword, getConfirmPassword}
+    return {email, password, confirmPassword, getEmail, getPassword, getConfirmPassword}
 };
 
 export default useInput;
